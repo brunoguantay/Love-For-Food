@@ -1,5 +1,6 @@
 import tkinter as tk
-from PIL import Image, ImageTk  # Instalar el módulo "Pillow" para trabajar con imágenes
+from tkinter import ttk
+from PIL import Image, ImageTk
 
 # Datos de ejemplo (puedes reemplazarlos con tus propios datos)
 review_info = {
@@ -17,37 +18,31 @@ def reservar():
     # Aquí puedes escribir el código para manejar la acción de reservar
     print("Reservar")
 
-# Crear ventana para editar review
+# Crear ventana para la reseña detallada
 ventana = tk.Tk()
-ventana.title("Editar Review")
+ventana.title("Reseña Detallada")
 
-# Mostrar el nombre del lugar
-lbl_nombre = tk.Label(ventana, text="Nombre del lugar:")
-lbl_nombre.pack(pady=5)
-entry_nombre = tk.Entry(ventana)
-entry_nombre.insert(tk.END, review_info["nombre"])
-entry_nombre.pack(pady=5)
+# Marco para la imagen y la reseña
+marco = ttk.Frame(ventana, padding=10)
+marco.pack()
+
+# Mostrar la imagen del local
+imagen = Image.open(review_info["foto"])
+imagen = imagen.resize((300, 200))  # Ajusta el tamaño de la imagen a tus necesidades
+foto = ImageTk.PhotoImage(imagen)
+lbl_foto = ttk.Label(marco, image=foto)
+lbl_foto.pack()
 
 # Mostrar la reseña
-lbl_reseña = tk.Label(ventana, text="Reseña:")
-lbl_reseña.pack(pady=5)
-entry_reseña = tk.Text(ventana, height=5, width=30)
-entry_reseña.insert(tk.END, review_info["reseña"])
-entry_reseña.pack(pady=5)
-
-# Mostrar la foto del local
-imagen = Image.open(review_info["foto"])
-imagen = imagen.resize((200, 200))  # Ajusta el tamaño de la imagen a tus necesidades
-foto = ImageTk.PhotoImage(imagen)
-lbl_foto = tk.Label(ventana, image=foto)
-lbl_foto.pack(pady=10)
+lbl_reseña = ttk.Label(marco, text=review_info["reseña"], wraplength=300, font=("Arial", 12))
+lbl_reseña.pack(pady=10)
 
 # Botones para calificar y reservar
-btn_calificar = tk.Button(ventana, text="Calificar", command=calificar)
-btn_calificar.pack(pady=5)
+boton_calificar = ttk.Button(marco, text="Calificar", command=calificar)
+boton_calificar.pack(side=tk.LEFT, padx=5)
 
-btn_reservar = tk.Button(ventana, text="Reservar", command=reservar)
-btn_reservar.pack(pady=5)
+boton_reservar = ttk.Button(marco, text="Reservar", command=reservar)
+boton_reservar.pack(side=tk.RIGHT, padx=5)
 
 # Iniciar el bucle de eventos
 ventana.mainloop()
